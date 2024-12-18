@@ -1,0 +1,301 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  resource String @default("user")
+
+  name               String
+  email              String  @unique
+  taxpayer_id        String
+  cnpj               String?
+  phone_prefix       String
+  phone              String
+  encrypted_password String
+  is_blocked         Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  company_id String
+  company    Company @relation(fields: [company_id], references: [id])
+
+  holder_id String?
+  holder    Holder? @relation(fields: [holder_id], references: [id])
+
+  wallets Wallet[]
+
+  @@unique([company_id, taxpayer_id, cnpj])
+  @@map("users")
+}
+
+model Company {
+  id       String @id @default(uuid())
+  resource String @default("company")
+
+  cnpj            String  @unique
+  zoop_account_id String? @unique
+  name            String
+  company_name    String
+  is_blocked      Boolean @default(false)
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  company_operations CompanyOperation[]
+  company_users      CompanyUser[]
+  company_documents  CompanyDocument[]
+  users              User[]
+
+  @@unique([id, cnpj])
+  @@map("companies")
+}
+
+model Admin {
+  id       String @id @default(uuid())
+  resource String @default("admin")
+
+  name               String
+  email              String    @unique
+  encrypted_password String
+  role               AdminRole @default(admin)
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("admins")
+}
+
+model Holder {
+  id       String @id @default(uuid())
+  resource String @default("holder")
+
+  zoop_holder_id       String?              @unique
+  zoop_account_id      String?              @unique
+  zoop_seller_id       String?
+  zoop_holder_status   String?
+  taxpayer_id          String               @unique
+  name                 String
+  cnae                 String
+  account_type         AccountType
+  email                String               @unique
+  cnpj                 String?
+  revenue_cents        Int?
+  cbo                  String?
+  rg                   String?
+  pep                  Boolean?             @default(false)
+  mothers_name         String?
+  birthday             String?
+  legal_name           String?
+  establishment_format EstablishmentFormat?
+  establishment_date   String?
+  phone_area_code      String?
+  phone_prefix         String?
+  phone_number         String?
+  address_street       String?
+  address_number       String?
+  address_city         String?
+  address_complement   String?
+  address_state        String?
+  address_neighborhood String?
+  address_postal_code  String?
+  address_country      String?
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  holder_documents HolderDocument[]
+  operations       Operation[]
+  users            User[]
+
+  @@unique([cnpj, taxpayer_id])
+  @@map("holders")
+}
+
+model CompanyOperation {
+  id       String @id @default(uuid())
+  resource String @default("company_operation")
+
+  zoop_operation_id String
+  type              String
+  amount            Int
+  currency          String
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  company_id String
+  company    Company @relation(fields: [company_id], references: [id])
+
+  @@map("company_operations")
+}
+
+model CompanyUser {
+  id       String @id @default(uuid())
+  resource String @default("company_user")
+
+  name               String
+  email              String          @unique
+  encrypted_password String
+  role               CompanyUserRole @default(admin)
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  company_id String
+  company    Company @relation(fields: [company_id], references: [id])
+
+  @@map("company_users")
+}
+
+model CompanyDocument {
+  id       String @id @default(uuid())
+  resource String @default("company_document")
+
+  type String
+  file String
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  company_id String
+  company    Company @relation(fields: [company_id], references: [id])
+
+  @@map("company_documents")
+}
+
+model Operation {
+  id       String @id @default(uuid())
+  resource String @default("operation")
+
+  zoop_operation_id String
+  type              String
+  amount_cents      Int
+  currency          String  @default("BRL")
+  status            String  @default("created")
+  bar_code          String? @default("")
+  discount          Int?    @default(0)
+  interest          Int?    @default(0)
+  fine              Int?    @default(0)
+  fee               String? @default("")
+  description       String? @default("")
+  reference_id      String? @default("")
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  holder_id String
+  holder    Holder @relation(fields: [holder_id], references: [id])
+
+  wallet_id String
+  wallet    Wallet @relation(fields: [wallet_id], references: [id])
+
+  @@map("operations")
+}
+
+model HolderDocument {
+  id       String @id @default(uuid())
+  resource String @default("holder_document")
+
+  type DocumentType
+  file String
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  holder_id String
+  holder    Holder @relation(fields: [holder_id], references: [id])
+
+  @@map("holder_documents")
+}
+
+model Wallet {
+  id       String @id @default(uuid())
+  resource String @default("wallet")
+
+  zoop_account_id   String
+  is_primary        Boolean          @default(false)
+  transaction_level TransactionLevel @default(internal)
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  user_id    String
+  user       User        @relation(fields: [user_id], references: [id])
+  operations Operation[]
+
+  @@map("wallets")
+}
+
+model Log {
+  id       String @id @default(uuid())
+  resource String @default("log")
+
+  error String
+
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@map("logs")
+}
+
+enum AccountType {
+  business
+  individual
+}
+
+enum EstablishmentFormat {
+  SS
+  COOP
+  SPE
+  LTDA
+  SA
+  ME
+  MEI
+  EI
+  EIRELI
+  SNC
+  SCS
+  SCA
+}
+
+enum TransactionLevel {
+  block
+  external
+  internal
+  company
+}
+
+enum AdminRole {
+  admin
+  super_admin
+}
+
+enum CompanyUserRole {
+  owner
+  manager
+  admin
+}
+
+enum DocumentType {
+  SELFIE
+  RG_FRENTE
+  RG_VERSO
+  CNH_FRENTE
+  CNH_VERSO
+  CCMEI
+  PAGINA_CONTRATO_SOCIAL
+  PAGINA_ESTATUTO_SOCIAL
+  PAGINA_ATA_ELEICAO_DIRETORES
+  PAGINA_PROCURACAO
+}

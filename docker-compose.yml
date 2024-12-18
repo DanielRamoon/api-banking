@@ -1,0 +1,41 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:15
+    container_name: tiva_banking_api_postgresql_database
+    restart: on-failure
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+    ports:
+      - 5432:${DATABASE_PORT}
+    environment:
+      POSTGRES_PASSWORD: 'tiva'
+      PSQL_HISTFILE: /root/log/.psql_history
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASS: ${DATABASE_PASS}
+      DATABASE_NAME: ${DATABASE_NAME}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DATABASE_USER}']
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    logging:
+      driver: none
+  server:
+    container_name: tiva_banking_api_node_server
+    restart: always
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+      args:
+        - SERVER_PORT= ${SERVER_PORT}
+    volumes:
+      - .:/app
+    ports:
+      - 5000:${SERVER_PORT}
+    env_file:
+      - .env
+
+volumes:
+  postgresql:

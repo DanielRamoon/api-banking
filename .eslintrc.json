@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "indent": ["error", 2], // Enforce 2-space indentation
+    "quotes": ["error", "single"], // Use single quotes for strings
+    "no-unused-vars": "error", // Report unused variables
+    "no-console": "warn", // Disallow the use of console.log and console.error
+    "prefer-const": "error", // Prefer const over let when variable is not reassigned
+    "no-var": "error", // Disallow the use of var
+    "max-len": ["error", { "code": 120 }], // Enforce a maximum line length
+    "prefer-template": "error" // Prefer template literals over string concatenation
+  }
+}

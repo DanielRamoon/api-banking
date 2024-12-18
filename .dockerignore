@@ -1,0 +1,19 @@
+
+.git
+.gitignore
+.dockerignore
+yarn-error.log
+README.md
+docker-compose.*
+Dockerfile
+dev.Dockerfile
+log/*
+node_modules/*
+tmp/*
+coverage/*
+
+# Ignore tests
+*.spec.ts
+**/__tests__/*
+**/__mocks__/*
+**/memory/*

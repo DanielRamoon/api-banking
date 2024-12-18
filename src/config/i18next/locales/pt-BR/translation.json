@@ -1,0 +1,421 @@
+{
+	"app_name": "Tiva Banking API",
+  "app_version": "1.0.0",
+  "email": {
+    "sent": "Email sent successfully",
+    "password": {
+      "recovery": {
+        "subject": "Recuperação de senha"
+      }
+    },
+    "error": {
+      "required": "Email is required",
+      "invalid": "Invalid email",
+      "send": "Error sending email",
+      "token": "Error getting token",
+      "user_type": {
+        "required": "User type is required",
+        "invalid": "Invalid user type: {{type}}. Allowed values: [admin, user, company_user]"
+      }
+    }
+  },
+  "error": {
+    "unauthorized": "User is not authorized",
+    "internal": "Internal error",
+    "notFound": "{{resource}} not found",
+    "creating": "Error while creating {{resource}}",
+    "deleting": "Error while deleting {{resource}}",
+    "updating": "Error while updating {{resource}}",
+    "id": {
+      "missing": "Missing id",
+      "invalid": "Invalid id for {{resource}}"
+    },
+    "values": {
+      "invalid": "Invalid values"
+    },
+    "password": {
+      "invalid": {
+        "pattern": "Password: The password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and a minimum length of 8 characters"
+      },
+      "match": "Passwords don't match",
+      "required": "Password is required",
+      "confirm": {
+        "required": "Confirm password is required",
+        "invalid": {
+          "pattern": "Confirm Password: The password must contain at least one uppercase letter, one lowercase letter, one digit, one special character, and a minimum length of 8 characters"
+        }
+      }
+    },
+    "authentication": {
+      "failed": "error while authenticating {{resource}}"
+    },
+    "jwtToken": {
+      "payload": {
+        "required": "Payload is missing"
+      },
+      "verify": "Token invalid or expired"
+    },
+    "file": {
+      "encode": "Unable to process the file. Please check the file and try again",
+      "upload": "Something went wrong during the file upload. Please retry",
+      "type": "File type not supported. Supported formats are: {{allowed_file_types}}",
+      "size": "File size exceeds the maximum allowed size of {{max_size}}",
+      "required": "Holder documents are required"
+    },
+    "provider": {
+      "holder": "Error while creating the holder on {{provider}}",
+      "seller": "Error while creating the seller on {{provider}}",
+      "holderDocuments": "Error while sending the holder documents on {{provider}}",
+      "wallet": "Error while creating the wallet on {{provider}}",
+      "approval": "Error while requesting approval on {{provider}}",
+      "zoopHolderId": "zoop_holder_id is missing",
+      "operation": "Error while getting the operation on {{provider}}",
+      "barcode": "Error while getting billet information from {{provider}}",
+      "pix": "Error while getting pix information from {{provider}}",
+      "pix_create": "Error while creating pix on {{provider}}",
+      "p2p": "Error while creating p2p transfer on {{provider}}"
+    }
+  },
+	"adapter": {},
+	"config": {},
+	"controller": {},
+	"entity": {
+    "user": {
+      "error": {
+        "id": "Invalid id - {{id}}",
+        "exists": "User already exists",
+        "companyId": {
+          "format": "Invalid companyId format - {{value}}",
+          "required": "The companyId is required",
+          "noExists": "The company does not exist"
+        },
+        "name": {
+          "length": "The name length is invalid",
+          "required": "The name is required"
+        },
+        "taxpayerId": {
+          "format": "Invalid user taxpayerId format - {{value}}",
+          "required": "The user taxpayerId is required"
+        },
+        "cnpj": {
+          "format": "Invalid user cnpj format - {{value}}",
+          "required": "The user cnpj is required"
+        },
+        "email": {
+          "format": "Invalid email format - {{email}}",
+          "required": "The email is required",
+          "exists": "User email already exists"
+        },
+        "phone_prefix": {
+          "format": "invalid phone prefix format - {{phone_prefix}}",
+          "required": "The phone_prefix is required"
+        },
+        "phone": {
+          "format": "invalid phone format - {{phone}}",
+          "required": "The phone is required"
+        },
+        "isBlocked": {
+          "invalid": "The field 'isBlocked' is required"
+        }
+      }
+    },
+    "admin": {
+      "error": {
+        "name": {
+          "length": "Invalid name - {{name}}"
+        },
+        "email": {
+          "format": "Invalid email format - {{email}}",
+          "required": "The email is required",
+          "exists": "Admin email already exists"
+        },
+        "role": {
+          "invalid": "'{{role}}' is not a valid admin role"
+        },
+        "isBlocked": {
+          "invalid": "The field 'isBlocked' is required"
+        }
+      }
+    },
+    "company": {
+      "error": {
+        "id": {
+          "format": "Invalid company id - {{id}}"
+        },
+        "name": {
+          "length": "Invalid company name - {{name}}"
+        },
+        "cnpj": {
+          "format": "Invalid company cnpj format - {{cnpj}}",
+          "exists": "The company 'cnpj' already exists"
+        },
+        "zoopAccountId": {
+          "format": "Invalid account id - {{accountId}}"
+        },
+        "isBlocked": {
+          "invalid": "The field 'isBlocked' is required"
+        }
+      }
+    },
+    "companyDocument": {
+      "error": {
+        "id": {
+          "format": "Invalid company document id - {{id}}"
+        },
+        "type": {
+          "format": "Invalid company document type - {{type}}"
+        },
+        "file": {
+          "format": "Invalid company document file - {{file}}"
+        },
+        "companyId": {
+          "format": "Invalid company id - {{id}}"
+        }
+      }
+    },
+    "companyOperation": {
+      "error": {
+        "id": {
+          "format": "Invalid company operation id - {{id}}"
+        },
+        "type": {
+          "format": "Invalid company operation type - {{type}}"
+        },
+        "file": {
+          "format": "Invalid company operation file - {{file}}"
+        },
+        "companyId": {
+          "format": "Invalid company id - {{id}}"
+        },
+        "zoopOperationId": {
+          "format": "Invalid operation id - {{operationId}}"
+        },
+        "amount": {
+          "value": "Invalid amount - {{amount}}"
+        },
+        "currency": {
+          "length": "Invalid currency - {{currency}}"
+        }
+      }
+    },
+    "companyUser": {
+      "error": {
+        "id": {
+          "format": "Invalid company user id - {{id}}"
+        },
+        "name": {
+          "length": "Invalid name - {{name}}"
+        },
+        "email": {
+          "format": "Invalid email format - {{email}}",
+          "exists": "The company user 'email' already exists"
+        },
+        "role": {
+          "invalid": "'{{role}}' is not a valid role"
+        },
+        "companyId": {
+          "format": "Invalid company id - {{id}}"
+        }
+      }
+    },
+    "holderDocument": {
+      "error": {
+        "id": {
+          "format": "Invalid holder document id - {{id}}"
+        },
+        "type": {
+          "format": "Invalid holder document type - {{type}}"
+        },
+        "file": {
+          "format": "Invalid holder document file - {{file}}"
+        },
+        "holderId": {
+          "required": "The holder id is required",
+          "format": "Invalid holder id - {{id}}",
+          "exists": "The holder does not exist"
+        }
+      }
+    },
+    "operation": {
+      "p2p": {
+        "confirmed": "Operation confirmed successfully"
+      },
+      "error": {
+        "id": {
+          "format": "Invalid operation id - {{id}}"
+        },
+        "type": {
+          "format": "Invalid operation type - {{type}}"
+        },
+        "holderId": {
+          "format": "Invalid holder id - {{id}}"
+        },
+        "walletId": {
+          "format": "Invalid wallet id - {{id}}"
+        },
+        "zoopOperationId": {
+          "format": "Invalid zoop operation id - {{operationId}}"
+        },
+        "amountCents": {
+          "value": "Amount must be greater than or equal to 1000",
+          "type": "Amount must be integer"
+        },
+        "currency": {
+          "length": "Invalid currency - {{currency}}"
+        },
+        "interest": {
+          "invalid": "Interest must be greater than or equal to 0"
+        },
+        "discount": {
+          "invalid": "Interest must be greater than or equal to 0"
+        },
+        "barCode": {
+          "required": "Bar code is required",
+          "invalid": "{{value}} is not a valid bar code"
+        },
+        "bankCode": {
+          "required": "Bank code is required"
+        },
+        "routingNumber": {
+          "required": "Routing number is required"
+        },
+        "routingCheckDigit": {
+          "required": "Routing check digit is required"
+        },
+        "description": {
+          "required": "Description is required"
+        },
+        "accountNumber": {
+          "required": "Account number is required",
+          "invalid": "Invalid Account number"
+        },
+        "accountCheckDigit": {
+          "required": "Account check digit is required"
+        },
+        "pixType": {
+          "invalid": "Invalid pix type - {{value}}",
+          "required": "Pix type is required"
+        },
+        "pixValue": {
+          "invalid": "Invalid {{type}} format - {{value}}",
+          "required": "Value is required",
+          "length": "Max email length is {{length}} characters"
+        }
+      }
+    },
+    "wallet": {
+      "error": {
+        "id": {
+          "format": "Invalid wallet id - {{id}}"
+        },
+        "transactionLevel": {
+          "invalid": "Invalid transaction level - {{transactionLevel}}"
+        },
+        "zoopAccountId": {
+          "format": "Invalid account id - {{accountId}}"
+        },
+        "userId": {
+          "format": "Invalid user id - {{id}}"
+        },
+        "isPrimary": {
+          "invalid": "The field 'isPrimary' is required"
+        }
+      }
+    },
+    "holder": {
+      "error": {
+        "id": {
+          "format": "Invalid holder id - {{id}}"
+        },
+        "zoopAccountId": {
+          "format": "Invalid account id - {{value}}"
+        },
+        "zoopHolderId": {
+          "format": "Invalid zoop holder id - {{value}}"
+        },
+        "name": {
+          "length": "Invalid name - {{name}}"
+        },
+        "accountType": {
+          "invalid": "'{{accountType}}' is not a valid accountType"
+        },
+        "email": {
+          "required": "Email is required for this account",
+          "format": "Invalid email format - {{email}}",
+          "exists": "The holder 'email' already exists"
+        },
+        "cnpj": {
+          "format": "Invalid holder cnpj format - {{value}}"
+        }
+        ,
+        "rg": {
+          "format": "Invalid holder rg format - {{value}}"
+        }
+        ,
+        "taxpayerId": {
+          "format": "Invalid holder taxpayerId format - {{value}}"
+        },
+        "revenueCents": {
+          "value": "Invalid revenue cents - {{value}}"
+        },
+        "cnae": {
+          "value": "Invalid CNAE - {{value}}"
+        },
+        "cbo": {
+          "value": "Invalid CBO - {{value}}"
+        },
+        "legalName": {
+          "length": "Invalid name - {{legalName}}"
+        },
+        "establishmentFormat": {
+          "invalid": "'{{establishmentFormat}}' is not a valid establishment format"
+        },
+        "establishmentDate": {
+          "invalid": "Invalid establishment date - {{value}} | Allowed format: 'yyyy-mm-dd"
+        },
+        "phoneAreaCode": {
+          "length": "Invalid phone area code - {{value}}"
+        },
+        "phone_prefix": {
+          "format": "invalid phone prefix format - {{phone_prefix}}"
+        },
+        "phoneNumber": {
+          "format": "invalid phone format - {{phone}}"
+        },
+        "addressStreet": {
+          "length": "Invalid address street - {{value}}"
+        },
+        "addressNumber": {
+          "length": "Invalid address number - {{value}}"
+        },
+        "addressCity": {
+          "length": "Invalid address city - {{value}}"
+        },
+        "addressCountry": {
+          "length": "Invalid address country - {{value}}"
+        },
+        "addressState": {
+          "length": "Invalid address state - {{value}}"
+        },
+        "addressPostalCode": {
+          "format": "Invalid address postal code - {{value}}"
+        },
+        "addressNeighborhood": {
+          "length": "Invalid address neighborhood - {{value}}"
+        },
+        "taxpayerIdCNPJUniqueness": {
+          "invalid": "Holder already exists"
+        },
+        "birthday": {
+          "invalid": "Invalid birthday - {{value}} | Allowed format: 'yyyy-mm-dd'"
+        }
+      }
+    }
+  },
+	"helper": {},
+	"middleware": {},
+	"repository": {},
+	"route": {},
+	"server": {},
+	"service": {}
+}
